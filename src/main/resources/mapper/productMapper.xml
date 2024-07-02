@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.productMapper">
+	<select id="getProductAll" resultType="ProductDto">
+		select * from product
+	</select>
+	    <insert id="insertProduct" parameterType="ProductDto">
+        INSERT INTO product (ProductName, ProductExp, ProductPrice, ProductRegistDate, ProductCategoryIdx, ProductShow, ProductImg)
+        VALUES (
+            #{ProductName},
+            #{ProductExp},
+            #{ProductPrice},
+            #{ProductRegistDate},
+            #{ProductCategoryIdx},
+            #{ProductShow},
+            #{ProductImg, jdbcType=VARBINARY}
+        )
+    </insert>
+
+    <!-- 상품 수정 -->
+    <update id="updateProduct" parameterType="ProductDto">
+        UPDATE product
+        SET ProductName = #{ProductName},
+            ProductExp = #{ProductExp},
+            ProductPrice = #{ProductPrice},
+            ProductRegistDate = #{ProductRegistDate},
+            ProductCategoryIdx = #{ProductCategoryIdx},
+            ProductShow = #{ProductShow},
+            ProductImg =
+            <choose>
+                <when test="productImg != null">
+                    #{ProductImg, jdbcType=VARBINARY}
+                </when>
+                <otherwise>
+                    NULL
+                </otherwise>
+            </choose>
+        WHERE productIdx = #{productIdx}
+    </update>
+</mapper>
